@@ -1,0 +1,368 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lab6</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-14"><meta name="DC.source" content="lab6.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Task 1</a></li><li><a href="#2">Task 2</a></li><li><a href="#3">Task 3</a></li><li><a href="#4">Task 4. Testing</a></li><li><a href="#5">Task 4</a></li><li><a href="#6">Task 5</a></li><li><a href="#8">Task 6</a></li><li><a href="#9">Task 7</a></li></ul></div><h2 id="1">Task 1</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'spine.tif'</span>);
+figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+
+I_neg = imadjust(I, [0 1], [1 0]);
+figure; imshow(I_neg); title(<span class="string">'Negative'</span>); drawnow;
+
+I_sel = imadjust(I, [0.1 0.3], [0 1]);
+figure; imshow(I_sel); title(<span class="string">'Affected areas'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab6_01.png" alt=""> <img vspace="5" hspace="5" src="lab6_02.png" alt=""> <img vspace="5" hspace="5" src="lab6_03.png" alt=""> <h2 id="2">Task 2</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = double(imread(<span class="string">'moon.tif'</span>));
+figure; imshow(uint8(I)); title(<span class="string">'Original'</span>); drawnow;
+
+FFT2 = fft2(I);
+figure; imshow(FFT2); title(<span class="string">'fft2'</span>); drawnow;
+
+figure(); imshow(log(FFT2), []), title(<span class="string">'log(fft2)'</span>); drawnow;
+</pre><pre class="codeoutput">Warning: Displaying real part of complex input. 
+Warning: Displaying real part of complex input. 
+</pre><img vspace="5" hspace="5" src="lab6_04.png" alt=""> <img vspace="5" hspace="5" src="lab6_05.png" alt=""> <img vspace="5" hspace="5" src="lab6_06.png" alt=""> <h2 id="3">Task 3</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'pout.tif'</span>);
+figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+
+I_bottom = imadjust(I, [0 1], [0 127] / 255);
+figure;
+    subplot(1, 2, 1); imshow(I_bottom);
+    subplot(1, 2, 2); imhist(I_bottom);
+suptitle(<span class="string">'Bottom'</span>); drawnow;
+
+I_top = imadjust(I, [0 1], [128 255] / 255);
+figure;
+    subplot(1, 2, 1); imshow(I_top);
+    subplot(1, 2, 2); imhist(I_top);
+suptitle(<span class="string">'Top'</span>); drawnow;
+
+I_bottom_eq = histeq(I_bottom);
+figure;
+    subplot(1, 2, 1); imshow(I_bottom_eq);
+    subplot(1, 2, 2); imhist(I_bottom_eq);
+suptitle(<span class="string">'Equalized bottom'</span>); drawnow;
+
+I_top_eq = histeq(I_top);
+figure;
+    subplot(1, 2, 1); imshow(I_top_eq);
+    subplot(1, 2, 2); imhist(I_top_eq);
+suptitle(<span class="string">'Equalized top'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab6_07.png" alt=""> <img vspace="5" hspace="5" src="lab6_08.png" alt=""> <img vspace="5" hspace="5" src="lab6_09.png" alt=""> <img vspace="5" hspace="5" src="lab6_10.png" alt=""> <img vspace="5" hspace="5" src="lab6_11.png" alt=""> <h2 id="4">Task 4. Testing</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'trees.tif'</span>);
+figure; imshow(I); title(<span class="string">'original'</span>); drawnow;
+types = {<span class="string">'average'</span> <span class="string">'disk'</span> <span class="string">'gaussian'</span> <span class="string">'laplacian'</span> <span class="string">'log'</span> <span class="string">'motion'</span> <span class="string">'prewitt'</span> <span class="string">'sobel'</span> <span class="string">'unsharp'</span>};
+
+<span class="keyword">for</span> type = types
+    figure;
+    I_filtered = imfilter(I, fspecial(type{1}));
+    imshow(I_filtered);
+    title(type{1});
+    drawnow;
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="lab6_12.png" alt=""> <img vspace="5" hspace="5" src="lab6_13.png" alt=""> <img vspace="5" hspace="5" src="lab6_14.png" alt=""> <img vspace="5" hspace="5" src="lab6_15.png" alt=""> <img vspace="5" hspace="5" src="lab6_16.png" alt=""> <img vspace="5" hspace="5" src="lab6_17.png" alt=""> <img vspace="5" hspace="5" src="lab6_18.png" alt=""> <img vspace="5" hspace="5" src="lab6_19.png" alt=""> <img vspace="5" hspace="5" src="lab6_20.png" alt=""> <img vspace="5" hspace="5" src="lab6_21.png" alt=""> <h2 id="5">Task 4</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'moon.tif'</span>);
+figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+
+I_avg3x3 = imfilter(I, fspecial(<span class="string">'average'</span>, 3)); figure; imshow(I_avg3x3); title(<span class="string">'Average 3x3'</span>); drawnow;
+I_avg5x5 = imfilter(I, fspecial(<span class="string">'average'</span>, 5)); figure; imshow(I_avg5x5); title(<span class="string">'Average 5x5'</span>); drawnow;
+
+I_laplacian3x3 = imfilter(I_avg3x3, fspecial(<span class="string">'laplacian'</span>, 1));  figure; imshow(imabsdiff(I_avg3x3, I_laplacian3x3)); title(<span class="string">'Avg 3x3 - laplacian'</span>); drawnow;
+I_laplacian5x5 = imfilter(I_avg5x5, fspecial(<span class="string">'laplacian'</span>, 1));  figure; imshow(imabsdiff(I_avg5x5, I_laplacian5x5)); title(<span class="string">'Avg 5x5 - laplacian'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab6_22.png" alt=""> <img vspace="5" hspace="5" src="lab6_23.png" alt=""> <img vspace="5" hspace="5" src="lab6_24.png" alt=""> <img vspace="5" hspace="5" src="lab6_25.png" alt=""> <img vspace="5" hspace="5" src="lab6_26.png" alt=""> <h2 id="6">Task 5</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = double(imread(<span class="string">'rice.png'</span>));
+figure; imshow(uint8(I)); title(<span class="string">'Original'</span>);
+
+S = fspecial(<span class="string">'sobel'</span>);
+I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title(<span class="string">'Horizontal Sobel'</span>); drawnow;
+I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title(<span class="string">'Vertical Sobel'</span>); drawnow;
+
+figure; imshow(uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title(<span class="string">'Sobel. Exact calculation'</span>); drawnow;
+figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title(<span class="string">'Sobel. Approximate calculation'</span>); drawnow;
+figure; imshow(uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title(<span class="string">'Sobel. Difference'</span>); drawnow;
+
+R_x = [1 0; 0 -1];
+R_y = [0 1; -1 0];
+I_rob_x = imfilter(I, R_x);
+I_rob_y = imfilter(I, R_y);
+
+figure; imshow(uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title(<span class="string">'Roberts cross. Exact calculation'</span>); drawnow;
+figure; imshow(uint8(abs(I_rob_x) + abs(I_rob_y))); title(<span class="string">'Roberts cross. Approximate calculation'</span>); drawnow;
+figure; imshow(uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title(<span class="string">'Roberts cross. Difference'</span>); drawnow;
+
+figure; imshow(255 - uint8(abs(I_rob_x) + abs(I_rob_y))); title(<span class="string">'Negative'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab6_27.png" alt=""> <img vspace="5" hspace="5" src="lab6_28.png" alt=""> <img vspace="5" hspace="5" src="lab6_29.png" alt=""> <img vspace="5" hspace="5" src="lab6_30.png" alt=""> <img vspace="5" hspace="5" src="lab6_31.png" alt=""> <img vspace="5" hspace="5" src="lab6_32.png" alt=""> <img vspace="5" hspace="5" src="lab6_33.png" alt=""> <img vspace="5" hspace="5" src="lab6_34.png" alt=""> <img vspace="5" hspace="5" src="lab6_35.png" alt=""> <img vspace="5" hspace="5" src="lab6_36.png" alt=""> <pre>&#1054;&#1087;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088; &#1057;&#1086;&#1073;&#1077;&#1083;&#1103; &#1074;&#1099;&#1076;&#1077;&#1083;&#1080;&#1083; &#1075;&#1088;&#1072;&#1085;&#1080;&#1094;&#1099; &#1073;&#1086;&#1083;&#1077;&#1077; &#1078;&#1080;&#1088;&#1085;&#1086;, &#1101;&#1090;&#1086; &#1089;&#1074;&#1103;&#1079;&#1072;&#1085;&#1086; &#1089; &#1088;&#1072;&#1079;&#1084;&#1077;&#1088;&#1086;&#1084;
+&#1084;&#1072;&#1089;&#1082;&#1080;. &#1058;&#1072;&#1082; &#1080;&#1083;&#1080; &#1080;&#1085;&#1072;&#1095;&#1077;, &#1086;&#1073;&#1072; &#1086;&#1087;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1072; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086; &#1074;&#1099;&#1076;&#1077;&#1083;&#1080;&#1083;&#1080; &#1075;&#1088;&#1072;&#1085;&#1080;&#1094;&#1099;.
+&#1042;&#1080;&#1079;&#1091;&#1072;&#1083;&#1100;&#1085;&#1086; &#1080;&#1089;&#1093;&#1086;&#1076;&#1085;&#1086;&#1077; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1077; &#1074;&#1099;&#1075;&#1083;&#1103;&#1076;&#1080;&#1090; &#1087;&#1088;&#1080;&#1074;&#1099;&#1095;&#1085;&#1077;&#1077;, &#1095;&#1077;&#1084; &#1087;&#1086;&#1083;&#1091;&#1095;&#1077;&#1085;&#1085;&#1099;&#1081;
+&#1085;&#1077;&#1075;&#1072;&#1090;&#1080;&#1074;.</pre><h2 id="8">Task 6</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = double(imread(<span class="string">'zelda2.pgm'</span>));
+figure; imshow(uint8(I)); title(<span class="string">'Original'</span>); drawnow;
+
+S = fspecial(<span class="string">'sobel'</span>);
+I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title(<span class="string">'Horizontal Sobel'</span>); drawnow;
+I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title(<span class="string">'Vertical Sobel'</span>); drawnow;
+figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title(<span class="string">'Sobel'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab6_37.png" alt=""> <img vspace="5" hspace="5" src="lab6_38.png" alt=""> <img vspace="5" hspace="5" src="lab6_39.png" alt=""> <img vspace="5" hspace="5" src="lab6_40.png" alt=""> <h2 id="9">Task 7</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'test.jpg'</span>);
+figure; imshow(I);  title(<span class="string">'Original'</span>); drawnow;
+
+<span class="keyword">for</span> i = 1:3
+    I_rgb_eq(:,:,i) = histeq(I(:,:,i));
+<span class="keyword">end</span>
+figure; imshow(I_rgb_eq); title(<span class="string">'Equalized RGB'</span>); drawnow;
+
+I_ycbcr = rgb2ycbcr(I);
+<span class="keyword">for</span> i = 1:3
+    I_ycbcr_eq(:,:,i) = histeq(I_ycbcr(:,:,i));
+<span class="keyword">end</span>
+figure; imshow(ycbcr2rgb(I_ycbcr_eq)); title(<span class="string">'Equalized YCbCr'</span>); drawnow;
+
+I_hsi = rgb2hsi(I);
+<span class="keyword">for</span> i = 1:3
+    I_hsi_eq(:,:,i) = histeq(I_hsi(:,:,i));
+<span class="keyword">end</span>
+figure; imshow(hsi2rgb(I_hsi_eq)); title(<span class="string">'Equalized HSI'</span>); drawnow;
+
+I_ycbcr_eq_y = I_ycbcr;
+I_ycbcr_eq_y(:,:,1) = histeq(I_ycbcr_eq_y(:,:,1));
+figure; imshow(ycbcr2rgb(I_ycbcr_eq_y)); title(<span class="string">'Equalized only Y in YCbCr'</span>); drawnow;
+
+I_hsi_eq_i = I_hsi;
+I_hsi_eq_is = I_hsi;
+
+I_hsi_eq_i(:,:,3) = histeq(I_hsi_eq_i(:,:,3));
+figure; imshow(hsi2rgb(I_hsi_eq_i)); title(<span class="string">'Equalized only I in HSI'</span>); drawnow;
+
+I_hsi_eq_is(:,:,2) = histeq(I_hsi_eq_is(:,:,2));
+I_hsi_eq_is(:,:,3) = histeq(I_hsi_eq_is(:,:,3));
+figure; imshow(hsi2rgb(I_hsi_eq_is)); title(<span class="string">'Equalized I and S in HSI'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab6_41.png" alt=""> <img vspace="5" hspace="5" src="lab6_42.png" alt=""> <img vspace="5" hspace="5" src="lab6_43.png" alt=""> <img vspace="5" hspace="5" src="lab6_44.png" alt=""> <img vspace="5" hspace="5" src="lab6_45.png" alt=""> <img vspace="5" hspace="5" src="lab6_46.png" alt=""> <img vspace="5" hspace="5" src="lab6_47.png" alt=""> <pre>&#1053;&#1072;&#1080;&#1073;&#1086;&#1083;&#1077;&#1077; &#1088;&#1077;&#1072;&#1083;&#1080;&#1089;&#1090;&#1080;&#1095;&#1085;&#1099;&#1084;&#1080; &#1074;&#1099;&#1075;&#1083;&#1103;&#1076;&#1103;&#1090; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1103; &#1087;&#1088;&#1080; &#1101;&#1082;&#1074;&#1072;&#1083;&#1080;&#1079;&#1072;&#1094;&#1080;&#1080; &#1090;&#1086;&#1083;&#1100;&#1082;&#1086; &#1082;&#1072;&#1085;&#1072;&#1083;&#1072; I &#1074; HSI &#1080; &#1082;&#1072;&#1085;&#1072;&#1083;&#1072; Y &#1074; YCbCr. &#1055;&#1088;&#1080; &#1101;&#1082;&#1074;&#1072;&#1083;&#1080;&#1079;&#1072;&#1094;&#1080;&#1080; &#1082;&#1072;&#1085;&#1072;&#1083;&#1086;&#1074; I &#1080; S &#1074; HSI &#1082;&#1072;&#1088;&#1090;&#1080;&#1085;&#1082;&#1072;
+&#1074;&#1099;&#1075;&#1083;&#1103;&#1076;&#1080;&#1090; &#1086;&#1095;&#1077;&#1085;&#1100; &#1089;&#1086;&#1095;&#1085;&#1086;, &#1085;&#1086;, &#1082; &#1089;&#1086;&#1078;&#1072;&#1083;&#1077;&#1085;&#1080;&#1102;, &#1084;&#1077;&#1085;&#1077;&#1077; &#1087;&#1088;&#1072;&#1074;&#1076;&#1086;&#1087;&#1086;&#1076;&#1086;&#1073;&#1085;&#1086;. &#1055;&#1088;&#1080; &#1087;&#1086;&#1083;&#1085;&#1086;&#1081; &#1101;&#1082;&#1074;&#1072;&#1083;&#1080;&#1079;&#1072;&#1094;&#1080;&#1080; YCbCr &#1080; HSI &#1087;&#1086;&#1083;&#1091;&#1095;&#1080;&#1083;&#1080;&#1089;&#1100; &#1085;&#1077;&#1089;&#1082;&#1086;&#1083;&#1100;&#1082;&#1086; &#1089;&#1102;&#1088;&#1088;&#1077;&#1072;&#1083;&#1080;&#1089;&#1090;&#1080;&#1095;&#1085;&#1099;&#1077; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1103;.
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;&#1099; &#1087;&#1086;&#1076;&#1086;&#1073;&#1085;&#1086;&#1081; &#1086;&#1073;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1080; &#1084;&#1086;&#1075;&#1091;&#1090; &#1086;&#1090;&#1083;&#1080;&#1095;&#1072;&#1090;&#1100;&#1089;&#1103; &#1086;&#1090; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1103; &#1082; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1102; &#1080; &#1085;&#1072;&#1080;&#1083;&#1091;&#1095;&#1096;&#1080;&#1081; &#1101;&#1092;&#1092;&#1077;&#1082;&#1090; &#1084;&#1086;&#1078;&#1077;&#1090; &#1076;&#1086;&#1089;&#1090;&#1080;&#1075;&#1072;&#1090;&#1100;&#1089;&#1103; &#1087;&#1088;&#1080; &#1089;&#1086;&#1074;&#1077;&#1088;&#1096;&#1077;&#1085;&#1085;&#1086; &#1088;&#1072;&#1079;&#1085;&#1099;&#1093; &#1087;&#1088;&#1077;&#1086;&#1073;&#1088;&#1072;&#1079;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;&#1093;.</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Task 1
+clc; close all; clear;
+I = imread('spine.tif');
+figure; imshow(I); title('Original'); drawnow;
+
+I_neg = imadjust(I, [0 1], [1 0]);
+figure; imshow(I_neg); title('Negative'); drawnow;
+
+I_sel = imadjust(I, [0.1 0.3], [0 1]);
+figure; imshow(I_sel); title('Affected areas'); drawnow;
+
+%% Task 2
+clc; close all; clear;
+I = double(imread('moon.tif'));
+figure; imshow(uint8(I)); title('Original'); drawnow;
+
+FFT2 = fft2(I);
+figure; imshow(FFT2); title('fft2'); drawnow;
+
+figure(); imshow(log(FFT2), []), title('log(fft2)'); drawnow;
+
+%% Task 3
+clc; close all; clear;
+I = imread('pout.tif');
+figure; imshow(I); title('Original'); drawnow;
+
+I_bottom = imadjust(I, [0 1], [0 127] / 255);
+figure;
+    subplot(1, 2, 1); imshow(I_bottom);
+    subplot(1, 2, 2); imhist(I_bottom);
+suptitle('Bottom'); drawnow;
+
+I_top = imadjust(I, [0 1], [128 255] / 255);
+figure;
+    subplot(1, 2, 1); imshow(I_top);
+    subplot(1, 2, 2); imhist(I_top);
+suptitle('Top'); drawnow;
+
+I_bottom_eq = histeq(I_bottom);
+figure;
+    subplot(1, 2, 1); imshow(I_bottom_eq);
+    subplot(1, 2, 2); imhist(I_bottom_eq);
+suptitle('Equalized bottom'); drawnow;
+
+I_top_eq = histeq(I_top);
+figure;
+    subplot(1, 2, 1); imshow(I_top_eq);
+    subplot(1, 2, 2); imhist(I_top_eq);
+suptitle('Equalized top'); drawnow;
+
+%% Task 4. Testing
+clc; close all; clear;
+I = imread('trees.tif');
+figure; imshow(I); title('original'); drawnow;
+types = {'average' 'disk' 'gaussian' 'laplacian' 'log' 'motion' 'prewitt' 'sobel' 'unsharp'};
+
+for type = types
+    figure;
+    I_filtered = imfilter(I, fspecial(type{1}));
+    imshow(I_filtered);
+    title(type{1});
+    drawnow;
+end
+
+%% Task 4
+clc; close all; clear;
+I = imread('moon.tif');
+figure; imshow(I); title('Original'); drawnow;
+
+I_avg3x3 = imfilter(I, fspecial('average', 3)); figure; imshow(I_avg3x3); title('Average 3x3'); drawnow;
+I_avg5x5 = imfilter(I, fspecial('average', 5)); figure; imshow(I_avg5x5); title('Average 5x5'); drawnow;
+
+I_laplacian3x3 = imfilter(I_avg3x3, fspecial('laplacian', 1));  figure; imshow(imabsdiff(I_avg3x3, I_laplacian3x3)); title('Avg 3x3 - laplacian'); drawnow;
+I_laplacian5x5 = imfilter(I_avg5x5, fspecial('laplacian', 1));  figure; imshow(imabsdiff(I_avg5x5, I_laplacian5x5)); title('Avg 5x5 - laplacian'); drawnow;
+
+%% Task 5
+clc; close all; clear;
+I = double(imread('rice.png'));
+figure; imshow(uint8(I)); title('Original');
+
+S = fspecial('sobel');
+I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title('Horizontal Sobel'); drawnow;
+I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title('Vertical Sobel'); drawnow;
+
+figure; imshow(uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title('Sobel. Exact calculation'); drawnow;
+figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title('Sobel. Approximate calculation'); drawnow;
+figure; imshow(uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title('Sobel. Difference'); drawnow;
+
+R_x = [1 0; 0 -1];
+R_y = [0 1; -1 0];
+I_rob_x = imfilter(I, R_x);
+I_rob_y = imfilter(I, R_y);
+
+figure; imshow(uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title('Roberts cross. Exact calculation'); drawnow;
+figure; imshow(uint8(abs(I_rob_x) + abs(I_rob_y))); title('Roberts cross. Approximate calculation'); drawnow;
+figure; imshow(uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title('Roberts cross. Difference'); drawnow;
+
+figure; imshow(255 - uint8(abs(I_rob_x) + abs(I_rob_y))); title('Negative'); drawnow;
+
+%%
+%
+%  Оператор Собеля выделил границы более жирно, это связано с размером
+%  маски. Так или иначе, оба оператора успешно выделили границы.
+%  Визуально исходное изображение выглядит привычнее, чем полученный
+%  негатив.
+%
+
+%% Task 6 
+clc; close all; clear;
+I = double(imread('zelda2.pgm'));
+figure; imshow(uint8(I)); title('Original'); drawnow;
+
+S = fspecial('sobel');
+I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title('Horizontal Sobel'); drawnow;
+I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title('Vertical Sobel'); drawnow;
+figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title('Sobel'); drawnow;
+
+%% Task 7
+clc; close all; clear;
+I = imread('test.jpg');
+figure; imshow(I);  title('Original'); drawnow;
+
+for i = 1:3
+    I_rgb_eq(:,:,i) = histeq(I(:,:,i));
+end
+figure; imshow(I_rgb_eq); title('Equalized RGB'); drawnow;
+
+I_ycbcr = rgb2ycbcr(I);
+for i = 1:3
+    I_ycbcr_eq(:,:,i) = histeq(I_ycbcr(:,:,i));    
+end
+figure; imshow(ycbcr2rgb(I_ycbcr_eq)); title('Equalized YCbCr'); drawnow;
+
+I_hsi = rgb2hsi(I);
+for i = 1:3
+    I_hsi_eq(:,:,i) = histeq(I_hsi(:,:,i));
+end
+figure; imshow(hsi2rgb(I_hsi_eq)); title('Equalized HSI'); drawnow;
+
+I_ycbcr_eq_y = I_ycbcr;
+I_ycbcr_eq_y(:,:,1) = histeq(I_ycbcr_eq_y(:,:,1));
+figure; imshow(ycbcr2rgb(I_ycbcr_eq_y)); title('Equalized only Y in YCbCr'); drawnow;
+
+I_hsi_eq_i = I_hsi;
+I_hsi_eq_is = I_hsi;
+
+I_hsi_eq_i(:,:,3) = histeq(I_hsi_eq_i(:,:,3));
+figure; imshow(hsi2rgb(I_hsi_eq_i)); title('Equalized only I in HSI'); drawnow;
+
+I_hsi_eq_is(:,:,2) = histeq(I_hsi_eq_is(:,:,2));
+I_hsi_eq_is(:,:,3) = histeq(I_hsi_eq_is(:,:,3));
+figure; imshow(hsi2rgb(I_hsi_eq_is)); title('Equalized I and S in HSI'); drawnow;
+
+%%
+% 
+%  Наиболее реалистичными выглядят изображения при эквализации только канала I в HSI и канала Y в YCbCr. При эквализации каналов I и S в HSI картинка
+%  выглядит очень сочно, но, к сожалению, менее правдоподобно. При полной эквализации YCbCr и HSI получились несколько сюрреалистичные изображения.
+%  Результаты подобной обработки могут отличаться от изображения к изображению и наилучший эффект может достигаться при совершенно разных преобразованиях.
+% 
+
+##### SOURCE END #####
+--></body></html>
