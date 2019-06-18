@@ -11,13 +11,13 @@ figure; imshow(I_sel); title('Affected areas'); drawnow;
 
 %% Task 2
 clc; close all; clear;
-I = double(imread('moon.tif'));
-figure; imshow(uint8(I)); title('Original'); drawnow;
+I = im2double(imread('moon.tif'));
+figure; imshow(im2uint8(I)); title('Original'); drawnow;
 
-FFT2 = fft2(I);
-figure; imshow(FFT2); title('fft2'); drawnow;
+FFT2 = abs(fftshift(fft2(I)));
+figure; imshow(mat2gray(FFT2)); title('fft2'); drawnow;
 
-figure(); imshow(log(FFT2), []), title('log(fft2)'); drawnow;
+figure(); imshow(log(1 + FFT2), []), title('log(fft2)'); drawnow;
 
 %% Task 3
 clc; close all; clear;
@@ -75,27 +75,27 @@ I_laplacian5x5 = imfilter(I_avg5x5, fspecial('laplacian', 1));  figure; imshow(i
 
 %% Task 5
 clc; close all; clear;
-I = double(imread('rice.png'));
-figure; imshow(uint8(I)); title('Original');
+I = im2double(imread('rice.png'));
+figure; imshow(im2uint8(I)); title('Original'); drawnow;
 
 S = fspecial('sobel');
-I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title('Horizontal Sobel'); drawnow;
-I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title('Vertical Sobel'); drawnow;
+I_sobel_x = imfilter(I, S); figure; imshow(im2uint8(I_sobel_x)) ; title('Horizontal Sobel'); drawnow;
+I_sobel_y = imfilter(I, S'); figure; imshow(im2uint8(I_sobel_y)) ; title('Vertical Sobel'); drawnow;
 
-figure; imshow(uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title('Sobel. Exact calculation'); drawnow;
-figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title('Sobel. Approximate calculation'); drawnow;
-figure; imshow(uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title('Sobel. Difference'); drawnow;
+figure; imshow(im2uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title('Sobel. Exact calculation'); drawnow;
+figure; imshow(im2uint8(abs(I_sobel_x) + abs(I_sobel_y))); title('Sobel. Approximate calculation'); drawnow;
+figure; imshow(im2uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title('Sobel. Difference'); drawnow;
 
 R_x = [1 0; 0 -1];
 R_y = [0 1; -1 0];
 I_rob_x = imfilter(I, R_x);
 I_rob_y = imfilter(I, R_y);
 
-figure; imshow(uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title('Roberts cross. Exact calculation'); drawnow;
-figure; imshow(uint8(abs(I_rob_x) + abs(I_rob_y))); title('Roberts cross. Approximate calculation'); drawnow;
-figure; imshow(uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title('Roberts cross. Difference'); drawnow;
+figure; imshow(im2uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title('Roberts cross. Exact calculation'); drawnow;
+figure; imshow(im2uint8(abs(I_rob_x) + abs(I_rob_y))); title('Roberts cross. Approximate calculation'); drawnow;
+figure; imshow(im2uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title('Roberts cross. Difference'); drawnow;
 
-figure; imshow(255 - uint8(abs(I_rob_x) + abs(I_rob_y))); title('Negative'); drawnow;
+figure; imshow(255 - im2uint8(abs(I_rob_x) + abs(I_rob_y))); title('Negative'); drawnow;
 
 %%
 %

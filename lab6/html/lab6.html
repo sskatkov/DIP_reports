@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>lab6</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-14"><meta name="DC.source" content="lab6.m"><style type="text/css">
+      --><title>lab6</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-06-19"><meta name="DC.source" content="lab6.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -76,15 +76,13 @@ figure; imshow(I_neg); title(<span class="string">'Negative'</span>); drawnow;
 I_sel = imadjust(I, [0.1 0.3], [0 1]);
 figure; imshow(I_sel); title(<span class="string">'Affected areas'</span>); drawnow;
 </pre><img vspace="5" hspace="5" src="lab6_01.png" alt=""> <img vspace="5" hspace="5" src="lab6_02.png" alt=""> <img vspace="5" hspace="5" src="lab6_03.png" alt=""> <h2 id="2">Task 2</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
-I = double(imread(<span class="string">'moon.tif'</span>));
-figure; imshow(uint8(I)); title(<span class="string">'Original'</span>); drawnow;
+I = im2double(imread(<span class="string">'moon.tif'</span>));
+figure; imshow(im2uint8(I)); title(<span class="string">'Original'</span>); drawnow;
 
-FFT2 = fft2(I);
-figure; imshow(FFT2); title(<span class="string">'fft2'</span>); drawnow;
+FFT2 = abs(fftshift(fft2(I)));
+figure; imshow(mat2gray(FFT2)); title(<span class="string">'fft2'</span>); drawnow;
 
-figure(); imshow(log(FFT2), []), title(<span class="string">'log(fft2)'</span>); drawnow;
-</pre><pre class="codeoutput">Warning: Displaying real part of complex input. 
-Warning: Displaying real part of complex input. 
+figure(); imshow(log(1 + FFT2), []), title(<span class="string">'log(fft2)'</span>); drawnow;
 </pre><img vspace="5" hspace="5" src="lab6_04.png" alt=""> <img vspace="5" hspace="5" src="lab6_05.png" alt=""> <img vspace="5" hspace="5" src="lab6_06.png" alt=""> <h2 id="3">Task 3</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'pout.tif'</span>);
 figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
@@ -134,27 +132,27 @@ I_avg5x5 = imfilter(I, fspecial(<span class="string">'average'</span>, 5)); figu
 I_laplacian3x3 = imfilter(I_avg3x3, fspecial(<span class="string">'laplacian'</span>, 1));  figure; imshow(imabsdiff(I_avg3x3, I_laplacian3x3)); title(<span class="string">'Avg 3x3 - laplacian'</span>); drawnow;
 I_laplacian5x5 = imfilter(I_avg5x5, fspecial(<span class="string">'laplacian'</span>, 1));  figure; imshow(imabsdiff(I_avg5x5, I_laplacian5x5)); title(<span class="string">'Avg 5x5 - laplacian'</span>); drawnow;
 </pre><img vspace="5" hspace="5" src="lab6_22.png" alt=""> <img vspace="5" hspace="5" src="lab6_23.png" alt=""> <img vspace="5" hspace="5" src="lab6_24.png" alt=""> <img vspace="5" hspace="5" src="lab6_25.png" alt=""> <img vspace="5" hspace="5" src="lab6_26.png" alt=""> <h2 id="6">Task 5</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
-I = double(imread(<span class="string">'rice.png'</span>));
-figure; imshow(uint8(I)); title(<span class="string">'Original'</span>);
+I = im2double(imread(<span class="string">'rice.png'</span>));
+figure; imshow(im2uint8(I)); title(<span class="string">'Original'</span>); drawnow;
 
 S = fspecial(<span class="string">'sobel'</span>);
-I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title(<span class="string">'Horizontal Sobel'</span>); drawnow;
-I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title(<span class="string">'Vertical Sobel'</span>); drawnow;
+I_sobel_x = imfilter(I, S); figure; imshow(im2uint8(I_sobel_x)) ; title(<span class="string">'Horizontal Sobel'</span>); drawnow;
+I_sobel_y = imfilter(I, S'); figure; imshow(im2uint8(I_sobel_y)) ; title(<span class="string">'Vertical Sobel'</span>); drawnow;
 
-figure; imshow(uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title(<span class="string">'Sobel. Exact calculation'</span>); drawnow;
-figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title(<span class="string">'Sobel. Approximate calculation'</span>); drawnow;
-figure; imshow(uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title(<span class="string">'Sobel. Difference'</span>); drawnow;
+figure; imshow(im2uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title(<span class="string">'Sobel. Exact calculation'</span>); drawnow;
+figure; imshow(im2uint8(abs(I_sobel_x) + abs(I_sobel_y))); title(<span class="string">'Sobel. Approximate calculation'</span>); drawnow;
+figure; imshow(im2uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title(<span class="string">'Sobel. Difference'</span>); drawnow;
 
 R_x = [1 0; 0 -1];
 R_y = [0 1; -1 0];
 I_rob_x = imfilter(I, R_x);
 I_rob_y = imfilter(I, R_y);
 
-figure; imshow(uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title(<span class="string">'Roberts cross. Exact calculation'</span>); drawnow;
-figure; imshow(uint8(abs(I_rob_x) + abs(I_rob_y))); title(<span class="string">'Roberts cross. Approximate calculation'</span>); drawnow;
-figure; imshow(uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title(<span class="string">'Roberts cross. Difference'</span>); drawnow;
+figure; imshow(im2uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title(<span class="string">'Roberts cross. Exact calculation'</span>); drawnow;
+figure; imshow(im2uint8(abs(I_rob_x) + abs(I_rob_y))); title(<span class="string">'Roberts cross. Approximate calculation'</span>); drawnow;
+figure; imshow(im2uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title(<span class="string">'Roberts cross. Difference'</span>); drawnow;
 
-figure; imshow(255 - uint8(abs(I_rob_x) + abs(I_rob_y))); title(<span class="string">'Negative'</span>); drawnow;
+figure; imshow(255 - im2uint8(abs(I_rob_x) + abs(I_rob_y))); title(<span class="string">'Negative'</span>); drawnow;
 </pre><img vspace="5" hspace="5" src="lab6_27.png" alt=""> <img vspace="5" hspace="5" src="lab6_28.png" alt=""> <img vspace="5" hspace="5" src="lab6_29.png" alt=""> <img vspace="5" hspace="5" src="lab6_30.png" alt=""> <img vspace="5" hspace="5" src="lab6_31.png" alt=""> <img vspace="5" hspace="5" src="lab6_32.png" alt=""> <img vspace="5" hspace="5" src="lab6_33.png" alt=""> <img vspace="5" hspace="5" src="lab6_34.png" alt=""> <img vspace="5" hspace="5" src="lab6_35.png" alt=""> <img vspace="5" hspace="5" src="lab6_36.png" alt=""> <pre>&#1054;&#1087;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088; &#1057;&#1086;&#1073;&#1077;&#1083;&#1103; &#1074;&#1099;&#1076;&#1077;&#1083;&#1080;&#1083; &#1075;&#1088;&#1072;&#1085;&#1080;&#1094;&#1099; &#1073;&#1086;&#1083;&#1077;&#1077; &#1078;&#1080;&#1088;&#1085;&#1086;, &#1101;&#1090;&#1086; &#1089;&#1074;&#1103;&#1079;&#1072;&#1085;&#1086; &#1089; &#1088;&#1072;&#1079;&#1084;&#1077;&#1088;&#1086;&#1084;
 &#1084;&#1072;&#1089;&#1082;&#1080;. &#1058;&#1072;&#1082; &#1080;&#1083;&#1080; &#1080;&#1085;&#1072;&#1095;&#1077;, &#1086;&#1073;&#1072; &#1086;&#1087;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1072; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086; &#1074;&#1099;&#1076;&#1077;&#1083;&#1080;&#1083;&#1080; &#1075;&#1088;&#1072;&#1085;&#1080;&#1094;&#1099;.
 &#1042;&#1080;&#1079;&#1091;&#1072;&#1083;&#1100;&#1085;&#1086; &#1080;&#1089;&#1093;&#1086;&#1076;&#1085;&#1086;&#1077; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1077; &#1074;&#1099;&#1075;&#1083;&#1103;&#1076;&#1080;&#1090; &#1087;&#1088;&#1080;&#1074;&#1099;&#1095;&#1085;&#1077;&#1077;, &#1095;&#1077;&#1084; &#1087;&#1086;&#1083;&#1091;&#1095;&#1077;&#1085;&#1085;&#1099;&#1081;
@@ -217,13 +215,13 @@ figure; imshow(I_sel); title('Affected areas'); drawnow;
 
 %% Task 2
 clc; close all; clear;
-I = double(imread('moon.tif'));
-figure; imshow(uint8(I)); title('Original'); drawnow;
+I = im2double(imread('moon.tif'));
+figure; imshow(im2uint8(I)); title('Original'); drawnow;
 
-FFT2 = fft2(I);
-figure; imshow(FFT2); title('fft2'); drawnow;
+FFT2 = abs(fftshift(fft2(I)));
+figure; imshow(mat2gray(FFT2)); title('fft2'); drawnow;
 
-figure(); imshow(log(FFT2), []), title('log(fft2)'); drawnow;
+figure(); imshow(log(1 + FFT2), []), title('log(fft2)'); drawnow;
 
 %% Task 3
 clc; close all; clear;
@@ -281,27 +279,27 @@ I_laplacian5x5 = imfilter(I_avg5x5, fspecial('laplacian', 1));  figure; imshow(i
 
 %% Task 5
 clc; close all; clear;
-I = double(imread('rice.png'));
-figure; imshow(uint8(I)); title('Original');
+I = im2double(imread('rice.png'));
+figure; imshow(im2uint8(I)); title('Original'); drawnow;
 
 S = fspecial('sobel');
-I_sobel_x = imfilter(I, S); figure; imshow(uint8(I_sobel_x)) ; title('Horizontal Sobel'); drawnow;
-I_sobel_y = imfilter(I, S); figure; imshow(uint8(I_sobel_y)) ; title('Vertical Sobel'); drawnow;
+I_sobel_x = imfilter(I, S); figure; imshow(im2uint8(I_sobel_x)) ; title('Horizontal Sobel'); drawnow;
+I_sobel_y = imfilter(I, S'); figure; imshow(im2uint8(I_sobel_y)) ; title('Vertical Sobel'); drawnow;
 
-figure; imshow(uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title('Sobel. Exact calculation'); drawnow;
-figure; imshow(uint8(abs(I_sobel_x) + abs(I_sobel_y))); title('Sobel. Approximate calculation'); drawnow;
-figure; imshow(uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title('Sobel. Difference'); drawnow;
+figure; imshow(im2uint8(sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2))); title('Sobel. Exact calculation'); drawnow;
+figure; imshow(im2uint8(abs(I_sobel_x) + abs(I_sobel_y))); title('Sobel. Approximate calculation'); drawnow;
+figure; imshow(im2uint8(imabsdiff(abs(I_sobel_x) + abs(I_sobel_y), sqrt(I_sobel_x .^ 2 + I_sobel_y  .^ 2)))); title('Sobel. Difference'); drawnow;
 
 R_x = [1 0; 0 -1];
 R_y = [0 1; -1 0];
 I_rob_x = imfilter(I, R_x);
 I_rob_y = imfilter(I, R_y);
 
-figure; imshow(uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title('Roberts cross. Exact calculation'); drawnow;
-figure; imshow(uint8(abs(I_rob_x) + abs(I_rob_y))); title('Roberts cross. Approximate calculation'); drawnow;
-figure; imshow(uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title('Roberts cross. Difference'); drawnow;
+figure; imshow(im2uint8(sqrt(I_rob_x .^ 2 + I_rob_y .^ 2))); title('Roberts cross. Exact calculation'); drawnow;
+figure; imshow(im2uint8(abs(I_rob_x) + abs(I_rob_y))); title('Roberts cross. Approximate calculation'); drawnow;
+figure; imshow(im2uint8(imabsdiff(abs(I_rob_x) + abs(I_rob_y), sqrt(I_rob_x .^ 2 + I_rob_y  .^ 2)))); title('Roberts cross. Difference'); drawnow;
 
-figure; imshow(255 - uint8(abs(I_rob_x) + abs(I_rob_y))); title('Negative'); drawnow;
+figure; imshow(255 - im2uint8(abs(I_rob_x) + abs(I_rob_y))); title('Negative'); drawnow;
 
 %%
 %
