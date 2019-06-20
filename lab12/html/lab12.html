@@ -1,0 +1,276 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lab12</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-06-20"><meta name="DC.source" content="lab12.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">&#1058;&#1072;sk 1</a></li><li><a href="#3">Task 2</a></li><li><a href="#4">Task 3</a></li><li><a href="#6">Task 4. RGB</a></li><li><a href="#7">Task 4. Grayscale</a></li><li><a href="#8">Task 5</a></li></ul></div><h2 id="1">&#1058;&#1072;sk 1</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = double(imread(<span class="string">'rice.png'</span>)); figure; imshow(I, []); title(<span class="string">'Original'</span>); drawnow;
+T = 50;
+T0 = 0;
+<span class="keyword">while</span> (abs(T - T0) &gt; 10^(-6))
+    g1 = double(I &lt;= T);
+    g2 = double(I &gt; T);
+    n = numel(I);
+    m1 = sum(sum(I .* g1)) / sum(sum(g1));
+    m2 = sum(sum(I .* g2)) / sum(sum(g2));
+    T0 = T;
+    T = (m1 + m2) / 2;
+<span class="keyword">end</span>
+
+I = uint8(I);
+I_global_threshold = im2bw(I, T / 256);
+I_graythresh = im2bw(I, graythresh(I));
+figure; imshow(I_global_threshold); title(<span class="string">'Global threshold'</span>); drawnow;
+figure; imshow(I_graythresh); title(<span class="string">'graythresh'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab12_01.png" alt=""> <img vspace="5" hspace="5" src="lab12_02.png" alt=""> <img vspace="5" hspace="5" src="lab12_03.png" alt=""> <pre>&#1042;&#1080;&#1079;&#1091;&#1072;&#1083;&#1100;&#1085;&#1086; &#1076;&#1074;&#1072; &#1087;&#1086;&#1083;&#1091;&#1095;&#1077;&#1085;&#1085;&#1099;&#1093; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1103; &#1087;&#1088;&#1072;&#1082;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1080; &#1085;&#1077; &#1088;&#1072;&#1079;&#1083;&#1080;&#1095;&#1072;&#1102;&#1090;&#1089;&#1103;.</pre><h2 id="3">Task 2</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+figure; I = imread(<span class="string">'barbara.png'</span>); imshow(I); title(<span class="string">'Original'</span>); drawnow;
+f = edge(I,<span class="string">'canny'</span>);
+[H, theta, rho] = hough(f);
+peaks = houghpeaks(H, ceil(0.2 * max(H(:))));
+
+lines = houghlines(f, theta, rho, peaks);
+figure; imshow(I); title(<span class="string">'Hough'</span>); drawnow; hold <span class="string">on</span>;
+<span class="keyword">for</span> k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1), xy(:,2), <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>,<span class="string">'Blue'</span>);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="lab12_04.png" alt=""> <img vspace="5" hspace="5" src="lab12_05.png" alt=""> <h2 id="4">Task 3</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+
+I_thresh = edge(I, 0.05); figure; imshow(I_thresh); title(<span class="string">'Threshold'</span>); drawnow;
+I_marr = edge(I, <span class="string">'log'</span>, 0.0015); figure; imshow(I_marr); title(<span class="string">'Marr-Hildreth'</span>); drawnow;
+I_canny = edge(I, <span class="string">'canny'</span>, 0.3, 0.5); figure; imshow(I_canny); title(<span class="string">'Canny'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab12_06.png" alt=""> <img vspace="5" hspace="5" src="lab12_07.png" alt=""> <img vspace="5" hspace="5" src="lab12_08.png" alt=""> <img vspace="5" hspace="5" src="lab12_09.png" alt=""> <pre>&#1052;&#1077;&#1090;&#1086;&#1076; &#1050;&#1101;&#1085;&#1085;&#1080; &#1080; &#1087;&#1086;&#1088;&#1086;&#1075;&#1086;&#1074;&#1072;&#1103; &#1086;&#1073;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1072; &#1087;&#1086;&#1082;&#1072;&#1079;&#1072;&#1083;&#1080; &#1085;&#1072;&#1080;&#1073;&#1086;&#1083;&#1077;&#1077; &#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1077;&#1085;&#1085;&#1099;&#1077; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;&#1099;. &#1052;&#1077;&#1090;&#1086;&#1076; &#1052;&#1072;&#1088;&#1088;&#1072;-&#1061;&#1080;&#1083;&#1076;&#1088;&#1077;&#1090; &#1074;&#1099;&#1076;&#1077;&#1083;&#1080;&#1083; &#1082;&#1086;&#1085;&#1090;&#1091;&#1088;&#1099; &#1076;&#1072;&#1078;&#1077; &#1089;&#1072;&#1084;&#1099;&#1077; &#1085;&#1077;&#1079;&#1085;&#1072;&#1095;&#1080;&#1090;&#1077;&#1083;&#1100;&#1085;&#1099;&#1077; &#1085;&#1072;&#1088;&#1072;&#1074;&#1085;&#1077; &#1089; &#1086;&#1089;&#1090;&#1072;&#1083;&#1100;&#1085;&#1099;&#1084;&#1080;.</pre><h2 id="6">Task 4. RGB</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+A = imread(<span class="string">'kobi.png'</span>);
+imshow(A); title(<span class="string">'Original'</span>); drawnow;
+
+[L, N] = superpixels(A, 500);
+
+figure; BW = boundarymask(L); imshow(imoverlay(A,BW,<span class="string">'cyan'</span>), <span class="string">'InitialMagnification'</span>,67); title(<span class="string">'Break into superpixels'</span>); drawnow;
+
+outputImage = zeros(size(A),<span class="string">'like'</span>,A);
+idx = label2idx(L);
+numRows = size(A,1);
+numCols = size(A,2);
+<span class="keyword">for</span> labelVal = 1:N
+    redIdx = idx{labelVal};
+    greenIdx = idx{labelVal}+numRows*numCols;
+    blueIdx = idx{labelVal}+2*numRows*numCols;
+    outputImage(redIdx) = mean(A(redIdx));
+    outputImage(greenIdx) = mean(A(greenIdx));
+    outputImage(blueIdx) = mean(A(blueIdx));
+<span class="keyword">end</span>
+
+figure; imshow(outputImage, <span class="string">'InitialMagnification'</span>, 67), title(sprintf(<span class="string">'Superpixels N = %d'</span>, N)); drawnow;
+</pre><img vspace="5" hspace="5" src="lab12_10.png" alt=""> <img vspace="5" hspace="5" src="lab12_11.png" alt=""> <img vspace="5" hspace="5" src="lab12_12.png" alt=""> <h2 id="7">Task 4. Grayscale</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+A = rgb2gray(imread(<span class="string">'kobi.png'</span>));
+imshow(A); title(<span class="string">'Original'</span>); drawnow;
+
+[L, N] = superpixels(A, 500);
+
+figure; BW = boundarymask(L); imshow(imoverlay(A,BW,<span class="string">'cyan'</span>), <span class="string">'InitialMagnification'</span>,67); title(<span class="string">'Break into superpixels'</span>); drawnow;
+
+outputImage = zeros(size(A),<span class="string">'like'</span>,A);
+idx = label2idx(L);
+<span class="keyword">for</span> labelVal = 1:N
+    gray_idx = idx{labelVal};
+    outputImage(gray_idx) = mean(A(gray_idx));
+<span class="keyword">end</span>
+
+figure; imshow(outputImage, <span class="string">'InitialMagnification'</span>, 67), title(sprintf(<span class="string">'Superpixels N = %d'</span>, N)); drawnow;
+</pre><img vspace="5" hspace="5" src="lab12_13.png" alt=""> <img vspace="5" hspace="5" src="lab12_14.png" alt=""> <img vspace="5" hspace="5" src="lab12_15.png" alt=""> <h2 id="8">Task 5</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+d1 = 8; d2 = 7;
+Im = rgb2gray(imread(<span class="string">'kobi.png'</span>));
+H = fspecial(<span class="string">'disk'</span>,d1); <span class="comment">% &#1089;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077; &#1084;&#1072;&#1089;&#1082;&#1080;</span>
+blurred = imfilter(Im, H, <span class="string">'replicate'</span>); <span class="comment">% &#1089;&#1075;&#1083;&#1072;&#1078;&#1080;&#1074;&#1072;&#1085;&#1080;&#1077; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1103; &#1084;&#1072;&#1089;&#1082;&#1086;&#1081; H</span>
+figure; imshow(blurred); blur = double(blurred);
+h = fspecial(<span class="string">'sobel'</span>); <span class="comment">% &#1089;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077; &#1084;&#1072;&#1089;&#1082;&#1080; &#1057;&#1086;&#1073;&#1077;&#1083;&#1072;</span>
+g = sqrt(imfilter(blur,h,<span class="string">'replicate'</span>) .^ 2 + imfilter(blur,h',<span class="string">'replicate'</span>) .^ 2); <span class="comment">% &#1074;&#1099;&#1095;&#1080;&#1089;&#1083;&#1077;&#1085;&#1080;&#1077; &#1084;&#1086;&#1076;&#1091;&#1083;&#1103; &#1075;&#1088;&#1072;&#1076;&#1080;&#1077;&#1085;&#1090;&#1072;</span>
+figure; imshow(g, []); drawnow;
+g2 = imclose(imopen(g, strel(<span class="string">'disk'</span>, d2)), strel(<span class="string">'disk'</span>, d2)); <span class="comment">% &#1084;&#1086;&#1088;&#1092;&#1086;&#1083;&#1086;&#1075;&#1080;&#1095;&#1077;&#1089;&#1082;&#1086;&#1077; &#1089;&#1075;&#1083;&#1072;&#1078;&#1080;&#1074;&#1072;&#1085;&#1080;&#1077;</span>
+figure; imshow(g2, []); drawnow;
+L = watershed(g2); <span class="comment">% &#1074;&#1099;&#1095;&#1080;&#1089;&#1083;&#1077;&#1085;&#1080;&#1077; &#1084;&#1072;&#1090;&#1088;&#1080;&#1094;&#1099; &#1084;&#1077;&#1090;&#1086;&#1082;, &#1086;&#1087;&#1088;&#1077;&#1076;&#1077;&#1083;&#1103;&#1102;&#1097;&#1077;&#1081; &#1074;&#1086;&#1076;&#1086;&#1088;&#1072;&#1079;&#1076;&#1077;&#1083;&#1099;</span>
+wr = L == 0; <span class="comment">% &#1085;&#1091;&#1083;&#1077;&#1074;&#1099;&#1077; &#1101;&#1083;&#1077;&#1084;&#1077;&#1085;&#1090;&#1099; &#1103;&#1074;&#1083;&#1103;&#1102;&#1090;&#1089;&#1103; &#1074;&#1086;&#1076;&#1086;&#1088;&#1072;&#1079;&#1076;&#1077;&#1083;&#1100;&#1085;&#1099;&#1084;&#1080; &#1087;&#1080;&#1082;&#1089;&#1077;&#1083;&#1103;&#1084;&#1080;</span>
+f = Im;
+f(wr) = 255; <span class="comment">% &#1074;&#1099;&#1076;&#1077;&#1083;&#1077;&#1085;&#1080;&#1077; &#1073;&#1077;&#1083;&#1099;&#1084; &#1074;&#1086;&#1076;&#1086;&#1088;&#1072;&#1079;&#1076;&#1077;&#1083;&#1100;&#1085;&#1099;&#1093; &#1087;&#1080;&#1082;&#1089;&#1077;&#1083;&#1077;&#1081;</span>
+figure; imshow(f); title(sprintf(<span class="string">'d_1 = %d, d_2 = %d'</span>, d1, d2)); drawnow;
+</pre><img vspace="5" hspace="5" src="lab12_16.png" alt=""> <img vspace="5" hspace="5" src="lab12_17.png" alt=""> <img vspace="5" hspace="5" src="lab12_18.png" alt=""> <img vspace="5" hspace="5" src="lab12_19.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Таsk 1
+clc; close all; clear;
+I = double(imread('rice.png')); figure; imshow(I, []); title('Original'); drawnow;
+T = 50;
+T0 = 0;
+while (abs(T - T0) > 10^(-6))
+    g1 = double(I <= T);
+    g2 = double(I > T);
+    n = numel(I);
+    m1 = sum(sum(I .* g1)) / sum(sum(g1));
+    m2 = sum(sum(I .* g2)) / sum(sum(g2));
+    T0 = T;
+    T = (m1 + m2) / 2;
+end
+
+I = uint8(I);
+I_global_threshold = im2bw(I, T / 256);
+I_graythresh = im2bw(I, graythresh(I));
+figure; imshow(I_global_threshold); title('Global threshold'); drawnow;
+figure; imshow(I_graythresh); title('graythresh'); drawnow;
+
+%%
+% 
+%  Визуально два полученных изображения практически не различаются.
+% 
+
+%% Task 2
+clc; close all; clear;
+figure; I = imread('barbara.png'); imshow(I); title('Original'); drawnow;
+f = edge(I,'canny');
+[H, theta, rho] = hough(f);
+peaks = houghpeaks(H, ceil(0.2 * max(H(:))));
+
+lines = houghlines(f, theta, rho, peaks);
+figure; imshow(I); title('Hough'); drawnow; hold on;
+for k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1), xy(:,2), 'LineWidth', 2, 'Color','Blue');
+end
+
+%% Task 3
+clc; close all; clear;
+I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
+
+I_thresh = edge(I, 0.05); figure; imshow(I_thresh); title('Threshold'); drawnow;
+I_marr = edge(I, 'log', 0.0015); figure; imshow(I_marr); title('Marr-Hildreth'); drawnow;
+I_canny = edge(I, 'canny', 0.3, 0.5); figure; imshow(I_canny); title('Canny'); drawnow;
+
+%%
+% 
+%  Метод Кэнни и пороговая обработка показали наиболее качественные результаты. Метод Марра-Хилдрет выделил контуры даже самые незначительные наравне с остальными.
+% 
+
+%% Task 4. RGB
+clc; close all; clear;
+A = imread('kobi.png');
+imshow(A); title('Original'); drawnow;
+
+[L, N] = superpixels(A, 500);
+
+figure; BW = boundarymask(L); imshow(imoverlay(A,BW,'cyan'), 'InitialMagnification',67); title('Break into superpixels'); drawnow;
+
+outputImage = zeros(size(A),'like',A);
+idx = label2idx(L);
+numRows = size(A,1);
+numCols = size(A,2);
+for labelVal = 1:N
+    redIdx = idx{labelVal};
+    greenIdx = idx{labelVal}+numRows*numCols;
+    blueIdx = idx{labelVal}+2*numRows*numCols;
+    outputImage(redIdx) = mean(A(redIdx));
+    outputImage(greenIdx) = mean(A(greenIdx));
+    outputImage(blueIdx) = mean(A(blueIdx));
+end    
+
+figure; imshow(outputImage, 'InitialMagnification', 67), title(sprintf('Superpixels N = %d', N)); drawnow;
+
+%% Task 4. Grayscale
+clc; close all; clear;
+A = rgb2gray(imread('kobi.png'));
+imshow(A); title('Original'); drawnow;
+
+[L, N] = superpixels(A, 500);
+
+figure; BW = boundarymask(L); imshow(imoverlay(A,BW,'cyan'), 'InitialMagnification',67); title('Break into superpixels'); drawnow;
+
+outputImage = zeros(size(A),'like',A);
+idx = label2idx(L);
+for labelVal = 1:N
+    gray_idx = idx{labelVal};
+    outputImage(gray_idx) = mean(A(gray_idx));
+end
+
+figure; imshow(outputImage, 'InitialMagnification', 67), title(sprintf('Superpixels N = %d', N)); drawnow;
+
+%% Task 5
+clc; close all; clear;
+d1 = 8; d2 = 7; 
+Im = rgb2gray(imread('kobi.png')); 
+H = fspecial('disk',d1); % создание маски
+blurred = imfilter(Im, H, 'replicate'); % сглаживание изображения маской H
+figure; imshow(blurred); blur = double(blurred); 
+h = fspecial('sobel'); % создание маски Собела
+g = sqrt(imfilter(blur,h,'replicate') .^ 2 + imfilter(blur,h','replicate') .^ 2); % вычисление модуля градиента
+figure; imshow(g, []); drawnow;
+g2 = imclose(imopen(g, strel('disk', d2)), strel('disk', d2)); % морфологическое сглаживание
+figure; imshow(g2, []); drawnow;
+L = watershed(g2); % вычисление матрицы меток, определяющей водоразделы
+wr = L == 0; % нулевые элементы являются водораздельными пикселями
+f = Im;
+f(wr) = 255; % выделение белым водораздельных пикселей
+figure; imshow(f); title(sprintf('d_1 = %d, d_2 = %d', d1, d2)); drawnow;
+
+##### SOURCE END #####
+--></body></html>
