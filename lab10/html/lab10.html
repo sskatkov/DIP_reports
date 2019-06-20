@@ -1,0 +1,394 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lab10</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-06-20"><meta name="DC.source" content="lab10.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Task 1. Inverse filter</a></li><li><a href="#2">Task 1. Wiener filter(1)</a></li><li><a href="#3">Task 1. Wiener filter(2)</a></li><li><a href="#4">Task 1. Tikhonov regularization</a></li><li><a href="#5">Task 2. Inverse filter</a></li><li><a href="#6">Task 2. Wiener filter(1)</a></li><li><a href="#7">Task 2. Wiener filter(2)</a></li><li><a href="#8">Task 2. Tikhonov regularization</a></li><li><a href="#9">Task 3</a></li><li><a href="#10">Task 4</a></li><li><a href="#11">Task 5</a></li></ul></div><h2 id="1">Task 1. Inverse filter</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+figure; imshow(I_corr); title(<span class="string">'Motion &amp; Noise'</span>);
+
+I_corr = deconvwnr((I_corr), PSF);
+figure; imshow(I_corr); title(<span class="string">'Inverse filter (Motion &amp; Noise)'</span>); drawnow;
+
+I_motion = deconvwnr((I_motion), PSF);
+figure; imshow(I_motion); title(<span class="string">'Inverse filter (Motion)'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_01.png" alt=""> <img vspace="5" hspace="5" src="lab10_02.png" alt=""> <img vspace="5" hspace="5" src="lab10_03.png" alt=""> <img vspace="5" hspace="5" src="lab10_04.png" alt=""> <h2 id="2">Task 1. Wiener filter(1)</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+
+noise  = double(I_corr) - double(I);
+S_n = abs(fft2(noise)) .^ 2;
+
+S_f = abs(fft2(I)) .^ 2;
+NSR = sum (S_n(:)) / sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title(<span class="string">'Wiener filter(1)'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_05.png" alt=""> <img vspace="5" hspace="5" src="lab10_06.png" alt=""> <h2 id="3">Task 1. Wiener filter(2)</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+
+[M,N] = size(I);
+
+noise = double(I_corr) - double(I);
+S_n = var(noise(:) - double(I(:)));
+S_g = abs(fft2(I_corr) / sqrt(M*N)) .^ 2;
+H = freqz2(PSF,M,N);
+S = S_g - S_n;
+S (S &lt; 0) = 0;
+S (S &lt; 1) = 0;
+S_f = S ./ (abs(H) .^ 2);
+NSR = M * N * sum (S_n(:)) ./ sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title(<span class="string">'Wiener filter(2)'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_07.png" alt=""> <img vspace="5" hspace="5" src="lab10_08.png" alt=""> <h2 id="4">Task 1. Tikhonov regularization</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+[M,N] = size(I);
+
+I_corr = deconvreg(I_corr, PSF, 4.45 / 1000 * M * N, [1e-7 1e7]);
+figure; imshow(I_corr); title(<span class="string">'Tikhonov regularization'</span>);
+</pre><img vspace="5" hspace="5" src="lab10_09.png" alt=""> <img vspace="5" hspace="5" src="lab10_10.png" alt=""> <h2 id="5">Task 2. Inverse filter</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+PSE = fspecial(<span class="string">'gaussian'</span>,50, 10);
+I_motion = edgetaper(I_motion, PSE);
+I_corr = edgetaper(I_corr, PSE);
+
+I_corr = deconvwnr((I_corr), PSF);
+figure; imshow(I_corr); title(<span class="string">'Inverse filtering (Motion &amp; Noise)'</span>); drawnow;
+
+I_motion = deconvwnr((I_motion), PSF);
+figure; imshow(I_motion); title(<span class="string">'Inverse filtering (Motion)'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_11.png" alt=""> <img vspace="5" hspace="5" src="lab10_12.png" alt=""> <img vspace="5" hspace="5" src="lab10_13.png" alt=""> <h2 id="6">Task 2. Wiener filter(1)</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+PSE = fspecial(<span class="string">'gaussian'</span>,50, 10);
+I_corr = edgetaper(I_corr, PSE);
+
+noise  = double(I_corr) - double(I);
+S_n = abs(fft2(noise)) .^ 2;
+
+S_f = abs(fft2(I)) .^ 2;
+NSR = sum (S_n(:)) / sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title(<span class="string">'Wiener filter(1)'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_14.png" alt=""> <img vspace="5" hspace="5" src="lab10_15.png" alt=""> <h2 id="7">Task 2. Wiener filter(2)</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+PSE = fspecial(<span class="string">'gaussian'</span>,50, 10);
+I_corr = edgetaper(I_corr, PSE);
+
+[M,N] = size(I);
+
+noise = double(I_corr) - double(I);
+S_n = var(noise(:) - double(I(:)));
+S_g = abs(fft2(I_corr) / sqrt(M*N)) .^ 2;
+H = freqz2(PSF,M,N);
+S = S_g - S_n;
+S (S &lt; 0) = 0;
+S (S &lt; 1) = 0;
+S_f = S ./ (abs(H) .^ 2);
+NSR = M * N * sum (S_n(:)) ./ sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title(<span class="string">'Wiener filter(2)'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_16.png" alt=""> <img vspace="5" hspace="5" src="lab10_17.png" alt=""> <h2 id="8">Task 2. Tikhonov regularization</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+PSE = fspecial(<span class="string">'gaussian'</span>,50, 10);
+I_corr = edgetaper(I_corr, PSE);
+[M,N] = size(I);
+
+I_corr = deconvreg(I_corr, PSF, 4.45 / 1000 * M * N, [1e-7 1e7]);
+figure; imshow(I_corr); title(<span class="string">'Tikhonov regularization'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_18.png" alt=""> <img vspace="5" hspace="5" src="lab10_19.png" alt=""> <h2 id="9">Task 3</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+PSE = fspecial(<span class="string">'gaussian'</span>, 50, 10);
+I_motion = edgetaper(I_motion, PSE);
+figure; imshow(I_motion); title(<span class="string">'Motion'</span>); drawnow;
+
+G = deconvlucy(I_motion, PSF, 50);
+figure; imshow(G); title(<span class="string">'Richardson-Lucy deconvolution'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_20.png" alt=""> <img vspace="5" hspace="5" src="lab10_21.png" alt=""> <img vspace="5" hspace="5" src="lab10_22.png" alt=""> <h2 id="10">Task 4</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = imread(<span class="string">'up.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+figure; imshow(I_motion); title(<span class="string">'Motion'</span>); drawnow;
+
+G = deconvlucy(I_motion, PSF, 50);
+figure; imshow(G); title(<span class="string">'Richardson&#8211;Lucy deconvolution'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_23.png" alt=""> <img vspace="5" hspace="5" src="lab10_24.png" alt=""> <img vspace="5" hspace="5" src="lab10_25.png" alt=""> <h2 id="11">Task 5</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
+I = im2double(imread(<span class="string">'up.png'</span>)); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
+PSF = fspecial(<span class="string">'motion'</span>, 10, 45);
+I_motion = imfilter(I, PSF, <span class="string">'replicate'</span>);
+I_corr = imnoise(I_motion, <span class="string">'gaussian'</span>, 0, 0.005);
+PSE = fspecial(<span class="string">'gaussian'</span>, 50, 10);
+figure; imshow(I_corr); title(<span class="string">'Motion &amp; Noise'</span>); drawnow;
+
+G = deconvlucy(I_corr, PSF, 50, 0.12);
+figure; imshow(G); title(<span class="string">'Richardson-Lucy deconvolution'</span>); drawnow;
+</pre><img vspace="5" hspace="5" src="lab10_26.png" alt=""> <img vspace="5" hspace="5" src="lab10_27.png" alt=""> <img vspace="5" hspace="5" src="lab10_28.png" alt=""> <pre>&#1042;&#1089;&#1077; &#1084;&#1077;&#1090;&#1086;&#1076;&#1099; &#1082;&#1088;&#1086;&#1084;&#1077; &#1080;&#1085;&#1074;&#1077;&#1088;&#1089;&#1085;&#1086;&#1081; &#1092;&#1080;&#1083;&#1100;&#1090;&#1088;&#1072;&#1094;&#1080;&#1080; &#1087;&#1086;&#1082;&#1072;&#1079;&#1072;&#1083;&#1080; &#1085;&#1086;&#1088;&#1084;&#1072;&#1083;&#1100;&#1085;&#1099;&#1077; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;&#1099;. &#1051;&#1091;&#1095;&#1096;&#1080;&#1093; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;&#1086;&#1074; &#1087;&#1086;&#1079;&#1074;&#1086;&#1083;&#1103;&#1077;&#1090; &#1076;&#1086;&#1073;&#1080;&#1090;&#1100;&#1089;&#1103; &#1084;&#1077;&#1090;&#1086;&#1076; &#1051;&#1102;&#1089;&#1080;-&#1056;&#1080;&#1095;&#1072;&#1088;&#1076;&#1089;&#1086;&#1085;&#1072;, &#1085;&#1086; &#1080; &#1086;&#1085; &#1087;&#1088;&#1080; &#1074;&#1086;&#1079;&#1085;&#1080;&#1082;&#1085;&#1086;&#1074;&#1077;&#1085;&#1080;&#1080; &#1096;&#1091;&#1084;&#1072; &#1085;&#1072; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1080; &#1076;&#1072;&#1077;&#1090; &#1076;&#1072;&#1083;&#1077;&#1082;&#1086; &#1085;&#1077; &#1080;&#1076;&#1077;&#1072;&#1083;&#1100;&#1085;&#1099;&#1081; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;,
+&#1082;&#1088;&#1086;&#1084;&#1077; &#1090;&#1086;&#1075;&#1086;, &#1087;&#1088;&#1080; &#1074;&#1086;&#1089;&#1089;&#1090;&#1072;&#1085;&#1086;&#1074;&#1083;&#1077;&#1085;&#1080;&#1080; &#1087;&#1088;&#1072;&#1082;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1080; &#1085;&#1077;&#1086;&#1073;&#1093;&#1086;&#1076;&#1080;&#1084;&#1086; &#1080;&#1089;&#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1100; edgetraper -- &#1074; &#1090;&#1072;&#1082;&#1086;&#1084; &#1089;&#1083;&#1091;&#1095;&#1072;&#1077; &#1085;&#1077; &#1074;&#1086;&#1079;&#1085;&#1080;&#1082;&#1072;&#1077;&#1090; "&#1079;&#1074;&#1086;&#1085;" &#1087;&#1086; &#1082;&#1088;&#1072;&#1103;&#1084; &#1080;&#1079;&#1086;&#1073;&#1088;&#1072;&#1078;&#1077;&#1085;&#1080;&#1103;. &#1055;&#1088;&#1080; &#1074;&#1086;&#1089;&#1089;&#1090;&#1072;&#1085;&#1086;&#1074;&#1083;&#1077;&#1085;&#1080;&#1080; &#1085;&#1077;&#1086;&#1073;&#1093;&#1086;&#1076;&#1080;&#1084;&#1086; &#1101;&#1084;&#1087;&#1080;&#1088;&#1080;&#1095;&#1077;&#1089;&#1082;&#1080; &#1087;&#1086;&#1076;&#1073;&#1080;&#1088;&#1072;&#1090;&#1100; &#1087;&#1072;&#1088;&#1072;&#1084;&#1077;&#1090;&#1088;&#1099; &#1084;&#1077;&#1090;&#1086;&#1076;&#1072;.</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Task 1. Inverse filter
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+figure; imshow(I_corr); title('Motion & Noise');
+
+I_corr = deconvwnr((I_corr), PSF);
+figure; imshow(I_corr); title('Inverse filter (Motion & Noise)'); drawnow;
+
+I_motion = deconvwnr((I_motion), PSF);
+figure; imshow(I_motion); title('Inverse filter (Motion)'); drawnow;
+
+%% Task 1. Wiener filter(1)
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+
+noise  = double(I_corr) - double(I);
+S_n = abs(fft2(noise)) .^ 2;
+
+S_f = abs(fft2(I)) .^ 2;
+NSR = sum (S_n(:)) / sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title('Wiener filter(1)'); drawnow;
+
+%% Task 1. Wiener filter(2)
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+
+[M,N] = size(I);
+
+noise = double(I_corr) - double(I);
+S_n = var(noise(:) - double(I(:)));
+S_g = abs(fft2(I_corr) / sqrt(M*N)) .^ 2;
+H = freqz2(PSF,M,N);
+S = S_g - S_n;
+S (S < 0) = 0;
+S (S < 1) = 0;
+S_f = S ./ (abs(H) .^ 2);
+NSR = M * N * sum (S_n(:)) ./ sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title('Wiener filter(2)'); drawnow;
+
+%% Task 1. Tikhonov regularization
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+[M,N] = size(I);
+
+I_corr = deconvreg(I_corr, PSF, 4.45 / 1000 * M * N, [1e-7 1e7]);
+figure; imshow(I_corr); title('Tikhonov regularization');
+
+
+%% Task 2. Inverse filter
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+PSE = fspecial('gaussian',50, 10);
+I_motion = edgetaper(I_motion, PSE);
+I_corr = edgetaper(I_corr, PSE);
+
+I_corr = deconvwnr((I_corr), PSF);
+figure; imshow(I_corr); title('Inverse filtering (Motion & Noise)'); drawnow;
+
+I_motion = deconvwnr((I_motion), PSF);
+figure; imshow(I_motion); title('Inverse filtering (Motion)'); drawnow;
+
+%% Task 2. Wiener filter(1)
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+PSE = fspecial('gaussian',50, 10);
+I_corr = edgetaper(I_corr, PSE);
+
+noise  = double(I_corr) - double(I);
+S_n = abs(fft2(noise)) .^ 2;
+
+S_f = abs(fft2(I)) .^ 2;
+NSR = sum (S_n(:)) / sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title('Wiener filter(1)'); drawnow;
+
+%% Task 2. Wiener filter(2)
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+PSE = fspecial('gaussian',50, 10);
+I_corr = edgetaper(I_corr, PSE);
+
+[M,N] = size(I);
+
+noise = double(I_corr) - double(I);
+S_n = var(noise(:) - double(I(:)));
+S_g = abs(fft2(I_corr) / sqrt(M*N)) .^ 2;
+H = freqz2(PSF,M,N);
+S = S_g - S_n;
+S (S < 0) = 0;
+S (S < 1) = 0;
+S_f = S ./ (abs(H) .^ 2);
+NSR = M * N * sum (S_n(:)) ./ sum (S_f(:));
+
+I_corr = deconvwnr((I_corr), PSF, NSR);
+figure; imshow(I_corr); title('Wiener filter(2)'); drawnow;
+
+%% Task 2. Tikhonov regularization
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+PSE = fspecial('gaussian',50, 10);
+I_corr = edgetaper(I_corr, PSE);
+[M,N] = size(I);
+
+I_corr = deconvreg(I_corr, PSF, 4.45 / 1000 * M * N, [1e-7 1e7]);
+figure; imshow(I_corr); title('Tikhonov regularization'); drawnow;
+
+%% Task 3
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+PSE = fspecial('gaussian', 50, 10);
+I_motion = edgetaper(I_motion, PSE);
+figure; imshow(I_motion); title('Motion'); drawnow;
+
+G = deconvlucy(I_motion, PSF, 50);
+figure; imshow(G); title('Richardson-Lucy deconvolution'); drawnow;
+
+%% Task 4
+clc; close all; clear;
+I = imread('up.png'); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+figure; imshow(I_motion); title('Motion'); drawnow;
+
+G = deconvlucy(I_motion, PSF, 50);
+figure; imshow(G); title('Richardson–Lucy deconvolution'); drawnow;
+
+%% Task 5
+clc; close all; clear;
+I = im2double(imread('up.png')); figure; imshow(I); title('Original'); drawnow;
+PSF = fspecial('motion', 10, 45);
+I_motion = imfilter(I, PSF, 'replicate');
+I_corr = imnoise(I_motion, 'gaussian', 0, 0.005);
+PSE = fspecial('gaussian', 50, 10);
+figure; imshow(I_corr); title('Motion & Noise'); drawnow;
+
+G = deconvlucy(I_corr, PSF, 50, 0.12);
+figure; imshow(G); title('Richardson-Lucy deconvolution'); drawnow;
+
+%%
+% 
+%  Все методы кроме инверсной фильтрации показали нормальные результаты. Лучших результатов позволяет добиться метод Люси-Ричардсона, но и он при возникновении шума на изображении дает далеко не идеальный результат,
+%  кроме того, при восстановлении практически необходимо использовать edgetraper REPLACE_WITH_DASH_DASH в таком случае не возникает "звон" по краям изображения. При восстановлении необходимо эмпирически подбирать параметры метода.
+% 
+
+##### SOURCE END #####
+--></body></html>
