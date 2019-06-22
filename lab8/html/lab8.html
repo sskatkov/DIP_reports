@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>lab8</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-06-20"><meta name="DC.source" content="lab8.m"><style type="text/css">
+      --><title>lab8</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-06-22"><meta name="DC.source" content="lab8.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -69,92 +69,92 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Task 1</a></li><li><a href="#2">Task 2. Arithmetic mean</a></li><li><a href="#3">Task 2. Geometric mean</a></li><li><a href="#4">Task 2. Median filter</a></li><li><a href="#5">Task 2. Midpoint filter</a></li><li><a href="#6">Task 2. Truncated median filter</a></li><li><a href="#8">Task 3</a></li><li><a href="#10">Task 4</a></li><li><a href="#11">Task 4. pout.tif</a></li></ul></div><h2 id="1">Task 1</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = imnoise(I, <span class="string">'gaussian'</span>, 0.03);
-I_peper = imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03);
+I_pepper = imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03);
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf(<span class="string">'Noised image SNR = %1.2f'</span>, snr_gauss), <span class="string">'. Gaussian'</span>]); drawnow;
-figure; imshow(I_peper); title([sprintf(<span class="string">'Noised image SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
+figure; imshow(I_pepper); title([sprintf(<span class="string">'Noised image SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_01.png" alt=""> <img vspace="5" hspace="5" src="lab8_02.png" alt=""> <img vspace="5" hspace="5" src="lab8_03.png" alt=""> <h2 id="2">Task 2. Arithmetic mean</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = imnoise(I, <span class="string">'gaussian'</span>, 0.03);
-I_peper = imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03);
+I_pepper = imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03);
 
 w_average = fspecial(<span class="string">'average'</span>, 3);
 I_gauss = imfilter(I_gauss, w_average, <span class="string">'replicate'</span>);
-I_peper = imfilter(I_peper, w_average, <span class="string">'replicate'</span>);
+I_pepper = imfilter(I_pepper, w_average, <span class="string">'replicate'</span>);
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf(<span class="string">'Arithmetic mean filter SNR = %1.2f'</span>, snr_gauss), <span class="string">'. Gaussian'</span>]); drawnow;
-figure; imshow(I_peper); title([sprintf(<span class="string">'Arithmetic mean filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
+figure; imshow(I_pepper); title([sprintf(<span class="string">'Arithmetic mean filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_04.png" alt=""> <img vspace="5" hspace="5" src="lab8_05.png" alt=""> <img vspace="5" hspace="5" src="lab8_06.png" alt=""> <h2 id="3">Task 2. Geometric mean</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = im2double(imnoise(I, <span class="string">'gaussian'</span>, 0.03));
-I_peper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
+I_pepper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
 
 gmean = @ (x) exp(imfilter(log(0.03 + x), ones(3,3), <span class="string">'replicate'</span>)) .^ (1 / 3 / 3);
 
 I_gauss = im2uint8(gmean(I_gauss));
-I_peper = im2uint8(gmean(I_peper));
+I_pepper = im2uint8(gmean(I_pepper));
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf(<span class="string">'Geometric mean filter SNR = %1.2f'</span>, snr_gauss), <span class="string">'. Gaussian'</span>]); drawnow;
-figure; imshow(I_peper); title([sprintf(<span class="string">'Geometric mean filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
+figure; imshow(I_pepper); title([sprintf(<span class="string">'Geometric mean filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_07.png" alt=""> <img vspace="5" hspace="5" src="lab8_08.png" alt=""> <img vspace="5" hspace="5" src="lab8_09.png" alt=""> <h2 id="4">Task 2. Median filter</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = im2double(imnoise(I, <span class="string">'gaussian'</span>, 0.03));
-I_peper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
+I_pepper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
 
 I_gauss = im2uint8(medfilt2(I_gauss, [3,3], <span class="string">'symmetric'</span>));
-I_peper = im2uint8(medfilt2(I_peper, [3,3], <span class="string">'symmetric'</span>));
+I_pepper = im2uint8(medfilt2(I_pepper, [3,3], <span class="string">'symmetric'</span>));
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf(<span class="string">'Median filter SNR = %1.2f'</span>, snr_gauss), <span class="string">'. Gaussian'</span>]); drawnow;
-figure; imshow(I_peper); title([sprintf(<span class="string">'Median filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
+figure; imshow(I_pepper); title([sprintf(<span class="string">'Median filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_10.png" alt=""> <img vspace="5" hspace="5" src="lab8_11.png" alt=""> <img vspace="5" hspace="5" src="lab8_12.png" alt=""> <h2 id="5">Task 2. Midpoint filter</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = im2double(imnoise(I, <span class="string">'gaussian'</span>, 0.03));
-I_peper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
+I_pepper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
 
 I_g1 = ordfilt2(I_gauss, 1, ones(3, 3), <span class="string">'symmetric'</span>);
 I_g2 = ordfilt2(I_gauss, 3 * 3, ones(3, 3), <span class="string">'symmetric'</span>);
 I_gauss = im2uint8((I_g1 + I_g2) / 2);
 
-I_p1 = ordfilt2(I_peper, 1, ones(3, 3), <span class="string">'symmetric'</span>);
-I_p2 = ordfilt2(I_peper, 3 * 3, ones(3, 3), <span class="string">'symmetric'</span>);
-I_peper = im2uint8((I_p1 + I_p2) / 2);
+I_p1 = ordfilt2(I_pepper, 1, ones(3, 3), <span class="string">'symmetric'</span>);
+I_p2 = ordfilt2(I_pepper, 3 * 3, ones(3, 3), <span class="string">'symmetric'</span>);
+I_pepper = im2uint8((I_p1 + I_p2) / 2);
 
 snr_gauss = snr(double(I), double(I_gauss)- double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf(<span class="string">'Midpoint filter SNR = %1.2f'</span>, snr_gauss), <span class="string">'. Gaussian'</span>]); drawnow;
-figure; imshow(I_peper); title([sprintf(<span class="string">'Midpoint filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
+figure; imshow(I_pepper); title([sprintf(<span class="string">'Midpoint filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_13.png" alt=""> <img vspace="5" hspace="5" src="lab8_14.png" alt=""> <img vspace="5" hspace="5" src="lab8_15.png" alt=""> <h2 id="6">Task 2. Truncated median filter</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = im2double(imnoise(I, <span class="string">'gaussian'</span>, 0.03));
-I_peper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
+I_pepper = im2double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
 
 I_gauss = im2uint8(alphatrim(I_gauss, 3, 3, 4));
-I_peper = im2uint8(alphatrim(I_peper, 3, 3, 4));
+I_pepper = im2uint8(alphatrim(I_pepper, 3, 3, 4));
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf(<span class="string">'Truncated median filter SNR = %1.2f'</span>, snr_gauss), <span class="string">'. Gaussian'</span>]); drawnow;
-figure; imshow(I_peper); title([sprintf(<span class="string">'Truncated median filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
+figure; imshow(I_pepper); title([sprintf(<span class="string">'Truncated median filter SNR = %1.2f'</span>, snr_peper), <span class="string">'. Salt &amp; Pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_16.png" alt=""> <img vspace="5" hspace="5" src="lab8_17.png" alt=""> <img vspace="5" hspace="5" src="lab8_18.png" alt=""> <pre>&#1053;&#1072;&#1080;&#1083;&#1091;&#1095;&#1096;&#1080;&#1084; &#1086;&#1073;&#1088;&#1072;&#1079;&#1086;&#1084; &#1089; &#1096;&#1091;&#1084;&#1086;&#1084; &#1090;&#1080;&#1087;&#1072; "&#1089;&#1086;&#1083;&#1100;-&#1087;&#1077;&#1088;&#1077;&#1094;" &#1089;&#1087;&#1088;&#1072;&#1074;&#1080;&#1083;&#1080;&#1089;&#1100; &#1084;&#1077;&#1076;&#1080;&#1072;&#1085;&#1085;&#1099;&#1081; &#1092;&#1080;&#1083;&#1100;&#1090;&#1088; &#1080; &#1092;&#1080;&#1083;&#1100;&#1090;&#1088; &#1091;&#1089;&#1088;&#1077;&#1076;&#1085;&#1077;&#1085;&#1085;&#1086;&#1075;&#1086; &#1089;&#1088;&#1077;&#1076;&#1085;&#1077;&#1075;&#1086;, &#1089; &#1075;&#1072;&#1091;&#1089;&#1089;&#1086;&#1074;&#1099;&#1084; &#1096;&#1091;&#1084;&#1086;&#1084; &#1087;&#1088;&#1072;&#1082;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1080; &#1074;&#1089;&#1077; &#1092;&#1080;&#1083;&#1100;&#1090;&#1088;&#1099;
 &#1089;&#1087;&#1088;&#1072;&#1074;&#1080;&#1083;&#1080;&#1089;&#1100; &#1087;&#1086;&#1095;&#1090;&#1080; &#1086;&#1076;&#1080;&#1085;&#1072;&#1082;&#1086;&#1074;&#1086;.</pre><h2 id="8">Task 3</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>); figure; imshow(I); title(<span class="string">'Original'</span>); drawnow;
 I_gauss = imnoise(I, <span class="string">'gaussian'</span>, 0.03);
-I_peper = imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03);
-I_noised = {I_gauss, I_peper};
+I_pepper = imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03);
+I_noised = {I_gauss, I_pepper};
 S = {<span class="string">'Gaussian'</span>, <span class="string">'Salt &amp; pepper'</span>};
 <span class="keyword">for</span> i=1:2
     PQ = paddedsize(size(I_noised{i}));
@@ -171,13 +171,13 @@ S = {<span class="string">'Gaussian'</span>, <span class="string">'Salt &amp; pe
 </pre><img vspace="5" hspace="5" src="lab8_19.png" alt=""> <img vspace="5" hspace="5" src="lab8_20.png" alt=""> <img vspace="5" hspace="5" src="lab8_21.png" alt=""> <pre>&#1043;&#1060;&#1053;&#1063; &#1087;&#1086;&#1082;&#1072;&#1079;&#1072;&#1083; &#1087;&#1088;&#1080; &#1088;&#1072;&#1073;&#1086;&#1090;&#1077; &#1089; &#1075;&#1072;&#1091;&#1089;&#1089;&#1086;&#1074;&#1099;&#1084; &#1096;&#1091;&#1084;&#1086;&#1084; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;&#1099; &#1095;&#1091;&#1090;&#1100; &#1083;&#1091;&#1095;&#1096;&#1080;&#1077;, &#1095;&#1077;&#1084; &#1074;&#1089;&#1077; &#1087;&#1088;&#1077;&#1076;&#1099;&#1076;&#1091;&#1097;&#1080;&#1077; &#1092;&#1080;&#1083;&#1100;&#1090;&#1088;&#1099;. &#1064;&#1091;&#1084; &#1090;&#1080;&#1087;&#1072; "&#1089;&#1086;&#1083;&#1100;-&#1087;&#1077;&#1088;&#1077;&#1094;" &#1086;&#1085; &#1091;&#1089;&#1090;&#1088;&#1072;&#1085;&#1080;&#1083; &#1085;&#1077;&#1076;&#1086;&#1089;&#1090;&#1072;&#1090;&#1086;&#1095;&#1085;&#1086; &#1093;&#1086;&#1088;&#1086;&#1096;&#1086;.</pre><h2 id="10">Task 4</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = imread(<span class="string">'barbara.png'</span>);
 I_gauss = double(imnoise(I, <span class="string">'gaussian'</span>, 0.03));
-I_peper = double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
+I_pepper = double(imnoise(I, <span class="string">'salt &amp; pepper'</span>, 0.03));
 I = double(I);
 [M, N] = size(I);
 K = 80;
 I_contrast = contrast(I, K); figure; imshow(uint8(I_contrast));title([sprintf(<span class="string">'Fuzzy logic K = %1.2f. '</span>, K), <span class="string">'Original'</span>]); drawnow;
-I_peper_contrast = contrast(I_gauss, K); figure; imshow(uint8(I_peper_contrast)); title([sprintf(<span class="string">'Fuzzy logic K = %1.2f. '</span>, K), <span class="string">'Gaussian'</span>]); drawnow;
-I_gaussian_contrast = contrast(I_peper, K); figure; imshow(uint8(I_gaussian_contrast)); title([sprintf(<span class="string">'Fuzzy logic K = %1.2f. '</span>, K), <span class="string">'Salt &amp; pepper'</span>]); drawnow;
+I_pepper_contrast = contrast(I_gauss, K); figure; imshow(uint8(I_pepper_contrast)); title([sprintf(<span class="string">'Fuzzy logic K = %1.2f. '</span>, K), <span class="string">'Gaussian'</span>]); drawnow;
+I_gaussian_contrast = contrast(I_pepper, K); figure; imshow(uint8(I_gaussian_contrast)); title([sprintf(<span class="string">'Fuzzy logic K = %1.2f. '</span>, K), <span class="string">'Salt &amp; pepper'</span>]); drawnow;
 </pre><img vspace="5" hspace="5" src="lab8_22.png" alt=""> <img vspace="5" hspace="5" src="lab8_23.png" alt=""> <img vspace="5" hspace="5" src="lab8_24.png" alt=""> <h2 id="11">Task 4. pout.tif</h2><pre class="codeinput">clc; close <span class="string">all</span>; clear;
 I = double(imread(<span class="string">'pout.tif'</span>)); figure; imshow(I, []); title(<span class="string">'Original'</span>); drawnow;
 K = 50;
@@ -191,96 +191,96 @@ figure; imshow(histeq(uint8(I))); title(<span class="string">'histeq'</span>);
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = imnoise(I, 'gaussian', 0.03);
-I_peper = imnoise(I, 'salt & pepper', 0.03);
+I_pepper = imnoise(I, 'salt & pepper', 0.03);
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf('Noised image SNR = %1.2f', snr_gauss), '. Gaussian']); drawnow;
-figure; imshow(I_peper); title([sprintf('Noised image SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
+figure; imshow(I_pepper); title([sprintf('Noised image SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
 
 %% Task 2. Arithmetic mean
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = imnoise(I, 'gaussian', 0.03);
-I_peper = imnoise(I, 'salt & pepper', 0.03);
+I_pepper = imnoise(I, 'salt & pepper', 0.03);
 
 w_average = fspecial('average', 3); 
 I_gauss = imfilter(I_gauss, w_average, 'replicate');
-I_peper = imfilter(I_peper, w_average, 'replicate');
+I_pepper = imfilter(I_pepper, w_average, 'replicate');
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf('Arithmetic mean filter SNR = %1.2f', snr_gauss), '. Gaussian']); drawnow;
-figure; imshow(I_peper); title([sprintf('Arithmetic mean filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
+figure; imshow(I_pepper); title([sprintf('Arithmetic mean filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
 
 %% Task 2. Geometric mean
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = im2double(imnoise(I, 'gaussian', 0.03));
-I_peper = im2double(imnoise(I, 'salt & pepper', 0.03));
+I_pepper = im2double(imnoise(I, 'salt & pepper', 0.03));
 
 gmean = @ (x) exp(imfilter(log(0.03 + x), ones(3,3), 'replicate')) .^ (1 / 3 / 3);
 
 I_gauss = im2uint8(gmean(I_gauss));
-I_peper = im2uint8(gmean(I_peper));
+I_pepper = im2uint8(gmean(I_pepper));
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf('Geometric mean filter SNR = %1.2f', snr_gauss), '. Gaussian']); drawnow;
-figure; imshow(I_peper); title([sprintf('Geometric mean filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
+figure; imshow(I_pepper); title([sprintf('Geometric mean filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
 
 %% Task 2. Median filter
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = im2double(imnoise(I, 'gaussian', 0.03));
-I_peper = im2double(imnoise(I, 'salt & pepper', 0.03));
+I_pepper = im2double(imnoise(I, 'salt & pepper', 0.03));
 
 I_gauss = im2uint8(medfilt2(I_gauss, [3,3], 'symmetric'));
-I_peper = im2uint8(medfilt2(I_peper, [3,3], 'symmetric'));
+I_pepper = im2uint8(medfilt2(I_pepper, [3,3], 'symmetric'));
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf('Median filter SNR = %1.2f', snr_gauss), '. Gaussian']); drawnow;
-figure; imshow(I_peper); title([sprintf('Median filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
+figure; imshow(I_pepper); title([sprintf('Median filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
 
 %% Task 2. Midpoint filter
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = im2double(imnoise(I, 'gaussian', 0.03));
-I_peper = im2double(imnoise(I, 'salt & pepper', 0.03));
+I_pepper = im2double(imnoise(I, 'salt & pepper', 0.03));
 
 I_g1 = ordfilt2(I_gauss, 1, ones(3, 3), 'symmetric');
 I_g2 = ordfilt2(I_gauss, 3 * 3, ones(3, 3), 'symmetric');
 I_gauss = im2uint8((I_g1 + I_g2) / 2);
 
-I_p1 = ordfilt2(I_peper, 1, ones(3, 3), 'symmetric');
-I_p2 = ordfilt2(I_peper, 3 * 3, ones(3, 3), 'symmetric');
-I_peper = im2uint8((I_p1 + I_p2) / 2);
+I_p1 = ordfilt2(I_pepper, 1, ones(3, 3), 'symmetric');
+I_p2 = ordfilt2(I_pepper, 3 * 3, ones(3, 3), 'symmetric');
+I_pepper = im2uint8((I_p1 + I_p2) / 2);
 
 snr_gauss = snr(double(I), double(I_gauss)- double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf('Midpoint filter SNR = %1.2f', snr_gauss), '. Gaussian']); drawnow;
-figure; imshow(I_peper); title([sprintf('Midpoint filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
+figure; imshow(I_pepper); title([sprintf('Midpoint filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
 
 %% Task 2. Truncated median filter
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = im2double(imnoise(I, 'gaussian', 0.03));
-I_peper = im2double(imnoise(I, 'salt & pepper', 0.03));
+I_pepper = im2double(imnoise(I, 'salt & pepper', 0.03));
 
 I_gauss = im2uint8(alphatrim(I_gauss, 3, 3, 4));
-I_peper = im2uint8(alphatrim(I_peper, 3, 3, 4));
+I_pepper = im2uint8(alphatrim(I_pepper, 3, 3, 4));
 
 snr_gauss = snr(double(I), double(I_gauss) - double(I));
-snr_peper = snr(double(I), double(I_peper) - double(I));
+snr_peper = snr(double(I), double(I_pepper) - double(I));
 
 figure; imshow(I_gauss); title([sprintf('Truncated median filter SNR = %1.2f', snr_gauss), '. Gaussian']); drawnow;
-figure; imshow(I_peper); title([sprintf('Truncated median filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
+figure; imshow(I_pepper); title([sprintf('Truncated median filter SNR = %1.2f', snr_peper), '. Salt & Pepper']); drawnow;
 
 %%
 % 
@@ -292,8 +292,8 @@ figure; imshow(I_peper); title([sprintf('Truncated median filter SNR = %1.2f', s
 clc; close all; clear;
 I = imread('barbara.png'); figure; imshow(I); title('Original'); drawnow;
 I_gauss = imnoise(I, 'gaussian', 0.03);
-I_peper = imnoise(I, 'salt & pepper', 0.03);
-I_noised = {I_gauss, I_peper};
+I_pepper = imnoise(I, 'salt & pepper', 0.03);
+I_noised = {I_gauss, I_pepper};
 S = {'Gaussian', 'Salt & pepper'};
 for i=1:2
     PQ = paddedsize(size(I_noised{i}));
@@ -317,13 +317,13 @@ end
 clc; close all; clear;
 I = imread('barbara.png');
 I_gauss = double(imnoise(I, 'gaussian', 0.03));
-I_peper = double(imnoise(I, 'salt & pepper', 0.03));
+I_pepper = double(imnoise(I, 'salt & pepper', 0.03));
 I = double(I);
 [M, N] = size(I);
 K = 80;
 I_contrast = contrast(I, K); figure; imshow(uint8(I_contrast));title([sprintf('Fuzzy logic K = %1.2f. ', K), 'Original']); drawnow;
-I_peper_contrast = contrast(I_gauss, K); figure; imshow(uint8(I_peper_contrast)); title([sprintf('Fuzzy logic K = %1.2f. ', K), 'Gaussian']); drawnow;
-I_gaussian_contrast = contrast(I_peper, K); figure; imshow(uint8(I_gaussian_contrast)); title([sprintf('Fuzzy logic K = %1.2f. ', K), 'Salt & pepper']); drawnow;
+I_pepper_contrast = contrast(I_gauss, K); figure; imshow(uint8(I_pepper_contrast)); title([sprintf('Fuzzy logic K = %1.2f. ', K), 'Gaussian']); drawnow;
+I_gaussian_contrast = contrast(I_pepper, K); figure; imshow(uint8(I_gaussian_contrast)); title([sprintf('Fuzzy logic K = %1.2f. ', K), 'Salt & pepper']); drawnow;
 
 %% Task 4. pout.tif
 clc; close all; clear;
